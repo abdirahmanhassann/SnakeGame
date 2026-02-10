@@ -14,21 +14,16 @@ namespace SnakeGame
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //myTimer.Tick += new EventHandler(GameTimer);
+            myTimer.Tick += new EventHandler(GameTimer);
 
-            //myTimer.Interval = 60;
-            //myTimer.Start();
-            Random randomSnakePositionX = new();
-            Random randomSnakePositionY = new();
-            int[] arrayOfInts = new int[2];
-            arrayOfInts[0] = randomSnakePositionX.Next(0, this.ClientSize.Width);
-            arrayOfInts[1] = randomSnakePositionY.Next(0, this.ClientSize.Height);
-            _snakePosition.Add(arrayOfInts);
-            GenerateBallPosition(arrayOfInts);
+            myTimer.Interval = 60;
+            myTimer.Start();
+            _snakePosition.Add([0, 0]);
+            GenerateBallPosition([0, 0]);
         }
-        private void GameTimer()
+        private void GameTimer(object sender, EventArgs e)
         {
-
+            snake
         }
         private int[] GenerateBallPosition(int[] initialSnakePosition)
         {
@@ -50,16 +45,10 @@ namespace SnakeGame
                 }
                 if (!isBallOnSnake)
                 {
-                    // set the PictureBox here or in the caller
-                    pictureBox1.Location = new Point(_ballPosition[0], _ballPosition[1]);
+                    mouse.Location = new Point(_ballPosition[0], _ballPosition[1]);
                     return _ballPosition;
                 }
             }
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
