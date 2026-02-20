@@ -51,6 +51,7 @@
             snake.Size = new Size(19, 19);
             snake.TabIndex = 2;
             snake.TabStop = false;
+            snake.Click += snake_Click;
             // 
             // Form1
             // 
@@ -63,6 +64,7 @@
             SizeGripStyle = SizeGripStyle.Hide;
             Text = "Form1";
             Load += Form1_Load;
+            KeyDown += Form1_KeyDown;
             ((System.ComponentModel.ISupportInitialize)mouse).EndInit();
             ((System.ComponentModel.ISupportInitialize)snake).EndInit();
             ResumeLayout(false);
