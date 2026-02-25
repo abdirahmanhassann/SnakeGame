@@ -39,7 +39,7 @@
             mouse.BackColor = SystemColors.ActiveCaption;
             mouse.Location = new Point(88, 89);
             mouse.Name = "mouse";
-            mouse.Size = new Size(19, 19);
+            mouse.Size = new Size(20, 20);
             mouse.TabIndex = 0;
             mouse.TabStop = false;
             // 
@@ -48,7 +48,7 @@
             snake.BackColor = SystemColors.MenuText;
             snake.Location = new Point(321, 189);
             snake.Name = "snake";
-            snake.Size = new Size(19, 19);
+            snake.Size = new Size(20, 20);
             snake.TabIndex = 2;
             snake.TabStop = false;
             snake.Click += snake_Click;
@@ -57,7 +57,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(684, 661);
             Controls.Add(snake);
             Controls.Add(mouse);
             Name = "Form1";
