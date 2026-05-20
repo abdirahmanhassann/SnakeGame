@@ -26,53 +26,26 @@
         ///  Required method for Designer support - do not modify
         ///  the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
-            mouse = new PictureBox();
-            snake = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)mouse).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)snake).BeginInit();
             SuspendLayout();
-            // 
-            // mouse
-            // 
-            mouse.BackColor = SystemColors.ActiveCaption;
-            mouse.Location = new Point(88, 89);
-            mouse.Name = "mouse";
-            mouse.Size = new Size(20, 20);
-            mouse.TabIndex = 0;
-            mouse.TabStop = false;
-            // 
-            // snake
-            // 
-            snake.BackColor = SystemColors.MenuText;
-            snake.Location = new Point(321, 189);
-            snake.Name = "snake";
-            snake.Size = new Size(20, 20);
-            snake.TabIndex = 2;
-            snake.TabStop = false;
-            snake.Click += snake_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(684, 661);
-            Controls.Add(snake);
-            Controls.Add(mouse);
+            ClientSize = new Size(4000, 4000);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximumSize = new Size(5000, 5000);
+            MinimumSize = new Size(4000, 4000);
             Name = "Form1";
             SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Form1";
             Load += Form1_Load;
-            KeyDown += Form1_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)mouse).EndInit();
-            ((System.ComponentModel.ISupportInitialize)snake).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private PictureBox mouse;
-        private PictureBox snake;
     }
 }
