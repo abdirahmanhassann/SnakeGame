@@ -39,7 +39,7 @@ namespace SnakeGame
             mousePictureBox.BackColor = SystemColors.ControlDark;
             mousePictureBox.Location = new Point(169, 187);
             mousePictureBox.Name = "mousePictureBox";
-            mousePictureBox.Size = new Size(52, 51);
+            mousePictureBox.Size = new Size(40, 40);
             mousePictureBox.TabIndex = 0;
             mousePictureBox.TabStop = false;
             mousePictureBox.Click += mousePictureBox_Click;
@@ -57,6 +57,7 @@ namespace SnakeGame
             Text = "Form1";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)mousePictureBox).EndInit();
+            KeyDown += Form1_KeyDown;
             ResumeLayout(false);
             //       ResumeLayout(false);
         }
