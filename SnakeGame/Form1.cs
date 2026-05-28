@@ -36,6 +36,7 @@ namespace SnakeGame
         }
         private void GameLoop(object sender, EventArgs e)
         {
+            CheckSnakeCollision();
             CheckMouseCollision();
             SnakeMovement();
             CheckOutOfBounds();
@@ -192,6 +193,19 @@ namespace SnakeGame
             }
         }
 
+        private void CheckSnakeCollision()
+        {
+            for (int i = 1; i < _Snake.Count(); i++)
+            {
+                if (_Snake[i].Location.X == _Snake[0].Location.X && _Snake[i].Location.Y == _Snake[0].Location.Y)
+                {
+                    _myTimer.Stop();
+                    _myTimer.Dispose();
+                    MessageBox.Show($"Game Over,\n Your score is {_Snake.Count() - 1}");
+                    
+                }
+            }
+        }
         private void CheckOutOfBounds()
         {
             if (_Snake[0].Location.X < 0 || _Snake[0].Location.Y < 0 || _Snake[0].Location.X > ClientSize.Width || _Snake[0].Location.Y > ClientSize.Height)
