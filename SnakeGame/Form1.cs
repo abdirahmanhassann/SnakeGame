@@ -21,7 +21,7 @@ namespace SnakeGame
         public List<PictureBox> _Snake = new();
         public int _x;
         public int _y;
-        public int gridSize = 15;
+        public int gridSize = 20;
         public Form1()
         {
             InitializeComponent();
@@ -36,7 +36,9 @@ namespace SnakeGame
         }
         private void GameLoop(object sender, EventArgs e)
         {
-
+            CheckMouseCollision();
+            SnakeMovement();
+            CheckOutOfBounds();
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -59,7 +61,7 @@ namespace SnakeGame
         }
         private void InitialValues()
         {
-            _snakeDirection = Directions.west;
+            ///_snakeDirection = Directions.north;
             _x = this.ClientSize.Width / gridSize;
             _y = this.ClientSize.Height / gridSize;
             _Snake.Add(CreateSnakePictureBox());
@@ -70,8 +72,31 @@ namespace SnakeGame
             Random ran = new();
             PictureBox snakePictureBox = new();
             snakePictureBox.Name = $"snakePictureBox{_Snake.Count + 1}";
-            snakePictureBox.Location = new Point(GenerateInitialSnakePosition(), GenerateInitialSnakePosition());
-            snakePictureBox.Size = new Size(this.ClientSize.Width / gridSize, this.ClientSize.Height / gridSize);
+            if (_Snake.Count == 0)
+            {
+                snakePictureBox.Location = new Point(GenerateInitialSnakePosition(), GenerateInitialSnakePosition());
+            }
+            else 
+            { 
+                if(_snakeDirection == Directions.north)
+                {
+                    snakePictureBox.Location = new Point(_Snake[_Snake.Count-1].Location.X, _Snake[_Snake.Count - 1].Location.Y - snakePictureBox.Height);
+                }
+                else if (_snakeDirection == Directions.east)
+                {
+                    snakePictureBox.Location = new Point(_Snake[_Snake.Count - 1].Location.X + snakePictureBox.Width, _Snake[_Snake.Count - 1].Location.Y);
+                }
+                else if (_snakeDirection == Directions.south)
+                {
+                    snakePictureBox.Location = new Point(_Snake[_Snake.Count - 1].Location.X, _Snake[_Snake.Count - 1].Location.Y + snakePictureBox.Height);
+
+                }
+                else if (_snakeDirection == Directions.west)
+                {
+                    snakePictureBox.Location = new Point(_Snake[_Snake.Count - 1].Location.X - snakePictureBox.Width, _Snake[_Snake.Count - 1].Location.Y - snakePictureBox.Height);
+                }
+            }
+            snakePictureBox.Size = new Size(_x, _y);
             snakePictureBox.TabIndex = 0;
             snakePictureBox.TabStop = false;
             snakePictureBox.BackColor = Color.FromArgb(255, 255, 20);
@@ -82,35 +107,32 @@ namespace SnakeGame
         {
             Random rand = new();
             int axis = rand.Next(1, gridSize);
-            return axis * _x;
+            return axis * _x - ((axis * _x) % gridSize);
         }
 
         private void GenerateMousePosition()
         {
-            bool isBallOnSnake;
+            bool isMouseOnSnake;
             Random rand = new();
             while (true)
             {
+                //refactored to handle gridbased mvmnt
                 int[] mousePosition = new int[2];
-                mousePosition[0] = rand.Next(0, this.ClientSize.Width);
-                mousePosition[1] = rand.Next(0, this.ClientSize.Width);
-                //formula to generate ball on square grid.
-                //wrote this a couple months ago
-                //dont remember why i took this approach.
-                //not the most efficient code, but it works and i cba figuring out a better way.
-                mousePosition[0] = mousePosition[0] - (mousePosition[0] % gridSize);
-                mousePosition[1] = mousePosition[1] - (mousePosition[1] % gridSize);
+                mousePosition[0] = rand.Next(0, gridSize);
+                mousePosition[1] = rand.Next(0, gridSize);
+                mousePosition[0] = mousePosition[0]*_x;
+                mousePosition[1] = mousePosition[1] *_y;
 
-                isBallOnSnake = false;
+                isMouseOnSnake = false;
                 for (int i = 0; i < _Snake.Count; i++)
                 {
                     if (_Snake[i].Location.X == mousePosition[0] && _Snake[i].Location.Y == mousePosition[1])
                     {
-                        isBallOnSnake = true;
+                        isMouseOnSnake = true;
                         break;
                     }
                 }
-                if (!isBallOnSnake)
+                if (!isMouseOnSnake)
                 {
                     mousePictureBox.Location = new Point(mousePosition[0], mousePosition[1]);
                     break;
@@ -120,6 +142,65 @@ namespace SnakeGame
 
         }
 
+        private void SnakeMovement()
+        {
+            Point previousLocation = _Snake[0].Location;
+            if (_snakeDirection == Directions.north)
+            {
+                _Snake[0].Location = new Point(
+                    _Snake[0].Location.X,
+                    _Snake[0].Location.Y - _y);
+            }
+
+            if (_snakeDirection == Directions.east)
+            {
+                _Snake[0].Location = new Point(
+                    _Snake[0].Location.X + _x,
+                    _Snake[0].Location.Y);
+            }
+
+            if (_snakeDirection == Directions.south)
+            {
+                _Snake[0].Location = new Point(
+                    _Snake[0].Location.X,
+                    _Snake[0].Location.Y + _y);
+            }
+
+            if (_snakeDirection == Directions.west)
+            {
+                _Snake[0].Location = new Point(
+                    _Snake[0].Location.X - _x,
+                    _Snake[0].Location.Y);
+            }
+            for (int i = 1; i < _Snake.Count; i++)
+            {
+                Point temp = _Snake[i].Location;
+
+                _Snake[i].Location = previousLocation;
+
+                previousLocation = temp;
+            }
+        }
+        
+
+        private void CheckMouseCollision()
+        {
+            if (_Snake[0].Location == mousePictureBox.Location)
+            {
+                GenerateMousePosition();
+                _Snake.Add(CreateSnakePictureBox());
+            }
+        }
+
+        private void CheckOutOfBounds()
+        {
+            if (_Snake[0].Location.X < 0 || _Snake[0].Location.Y < 0 || _Snake[0].Location.X > ClientSize.Width || _Snake[0].Location.Y > ClientSize.Height)
+            {
+                _myTimer.Stop();
+                _myTimer.Dispose();
+                MessageBox.Show($"Game Over,\n Your score is {_Snake.Count() - 1}");
+            }
+        }
         private void mousePictureBox_Click(object sender, EventArgs e)
         {
 
