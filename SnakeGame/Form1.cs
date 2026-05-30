@@ -22,6 +22,7 @@ namespace SnakeGame
         public int _x;
         public int _y;
         public int gridSize = 20;
+        public int _size = 0;
         public Form1()
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace SnakeGame
             CheckMouseCollision();
             SnakeMovement();
             CheckOutOfBounds();
+            AdjustDifficulty();
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -62,7 +64,7 @@ namespace SnakeGame
         }
         private void InitialValues()
         {
-            ///_snakeDirection = Directions.north;
+            ///_snakeDirec tion = Directions.north;
             _x = this.ClientSize.Width / gridSize;
             _y = this.ClientSize.Height / gridSize;
             _Snake.Add(CreateSnakePictureBox());
@@ -121,9 +123,8 @@ namespace SnakeGame
                 int[] mousePosition = new int[2];
                 mousePosition[0] = rand.Next(0, gridSize);
                 mousePosition[1] = rand.Next(0, gridSize);
-                mousePosition[0] = mousePosition[0]*_x;
-                mousePosition[1] = mousePosition[1] *_y;
-
+                mousePosition[0] = mousePosition[0]* _x;
+                mousePosition[1] = mousePosition[1] * _y;
                 isMouseOnSnake = false;
                 for (int i = 0; i < _Snake.Count; i++)
                 {
@@ -205,6 +206,14 @@ namespace SnakeGame
                     
                 }
             }
+        }
+        private void AdjustDifficulty()
+        {
+            if (_Snake.Count % 2 == 0 && _size ! == _Snake.Count)
+            {
+                _myTimer.Interval -= _myTimer.Interval / 10;
+                _size = _Snake.Count();
+        }
         }
         private void CheckOutOfBounds()
         {
